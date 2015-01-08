@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Reportes</title>
+	 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+   <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
+    <script type='text/javascript' src='http://162.243.57.9/js/bootstrap.min.js'></script>
+   <script type='text/javascript' src='http://162.243.57.9/js/bootstrap-datetimepicker.min.js'></script>
+
+   <link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+
+   <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+
+   <link href="http://162.243.57.9/js/bootstrap.css" rel="stylesheet">
+   <link rel="stylesheet" type="text/css" media="screen" href="http://162.243.57.9/js/bootstrap-datetimepicker.min.css">
+
+<link rel="icon" href="http://www.iconsdb.com/icons/download/dark-gray/x-mark-4-512.png" type="image/gif" sizes="16x16">
+
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker1').datetimepicker({
+      language: 'en',
+      pickTime: false
+    
+    });
+  });
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker2').datetimepicker({
+      language: 'en',
+      pickTime: false
+    
+    });
+  });
+</script>
+
+   
+
+<style type="text/css">
+	
+
+table{
+	border-collapse: collapse;
+}
+
+td{
+	
+	font-family: 'Varela Round', sans-serif;;
+	font-size: 12px; 
+	text-align: left;
+	height: 30px;
+    vertical-align: center;
+    padding: 3px;
+
+}
+.mes{
+	font-family: 'Varela Round', sans-serif;
+	font-size: 12px; 
+
+    vertical-align: center;
+   
+}
+
+tr{
+	border: 1px solid rgb(69, 64, 97);
+}
+
+
+body{
+
+	font-family: 'Varela Round', sans-serif;
+	font-size: 12px;
+}
+#titulo{
+
+  text-align: center;
+  font-size: 13px;
+
+
+}
+
+.buscar{
+
+  font-family: 'Varela Round', sans-serif;
+}
+
+
+
+
+</style>
+
+</head>
+
+<body>
+
+<div id='titulo'>Reporte SMS OMMM <br>
+
+{% if fechax %}
+
+Del {{fechax}} hasta {{fechay}}
+
+{% endif %}
+<!--<form action="/contact_post/" method="post">{% csrf_token %}
+            
+            {{ form.as_p }}-->
+
+
+            <p>Seleccionar rango de fecha</p>
+            <div class="input-append date" id="datetimepicker1" >
+            <input data-format="yyyy-MM-dd" type="text" id="fechax" name ="fechax" value="{{fecha_f}}"/>
+              <span class="add-on">
+              Fecha Inicio<i data-date-icon="icon-calendar" data-time-icon="icon-time" class="icon-calendar">
+              </i>
+              </span>
+              <span>
+             
+ 
+            </div>
+
+
+            <div class="input-append date" id="datetimepicker2" >
+            <input data-format="yyyy-MM-dd" type="text" id="fechay" name ="fechay" value="{{fecha_fy}}">
+              <span class="add-on">
+              Fecha Fin<i data-date-icon="icon-calendar" data-time-icon="icon-time" class="icon-calendar">
+              </i>
+              </span>
+              <span>
+             
+            
+            </div>
+ 
+            <div id='buscar'>Buscar</div>
+
+            </div>
+<!--<input type="submit" class="buscar" value="Buscar"  />-->
+
+
+
+<!--</form>-->
+
+
+<script type="text/javascript">
+
+$("#buscar").click(function() {
+
+fx =$("#fechax").val()
+fy =$("#fechay").val()
+
+if (fy<fx){
+
+  alert('fecha fin debe ser mayor que la fecha inicio')
+  return(0)
+}
+
+
+elemx = fx.split('-');
+
+anx=elemx[0]
+mx = elemx[1]
+dx= elemx[2]
+
+if (!anx){
+  alert('ingrese una fecha de inicio')
+  return(0)
+}
+
+
+
+elemy = fy.split('-');
+
+any=elemy[0]
+my = elemy[1]
+dy= elemy[2]
+
+if (!any){
+  alert('ingrese una fecha fin')
+  return(0)
+}
+
+window.location = 'http://162.243.57.9:8000/contact/'+anx+'/'+mx+'/'+dx+'/'+any+'/'+my+'/'+dy;
+
+})
+
+
+</script>
+
+<br>
+<a class ='csv' href="http://162.243.57.9/{{nfile}}">Descargar Archivo CSV</a><br>
+
+<a>Cantidad de registros : {{ num_reg }}</a>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    <a href='?page={{contacts.paginator.num_pages}}'>Ultima Pagina</a>
+</div>
+
+<table>
+<tr style="background-color:black; color:white"  ><td  width="15%" >Fecha</td><td width="10%">IP</td><td width="10%">Destino</td><td width="35%">Mensaje</td><td width="10%">Status</td><td width="10%">Detail</td><td width="10%">Cliente</td></tr>
+
+{% for contact in contacts %}
+
+<tr>
+    <td width="15%" >{{ contact.fechadb }}</td>
+    <td width="10%" >{{ contact.ip }}</td>
+    <td width="10%">{{ contact.dst }}</td>
+    <td width="35%">{{ contact.msg }}</td>
+    <td width="10%">{{ contact.status }}</td>
+    <td width="10%" >{{ contact.detail}}</td>
+    <td width="10%" >{{ contact.cliente}}</td>
+</tr>
+    
+{% endfor %}
+</table>
+
+</body>
+</html>

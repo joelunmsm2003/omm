@@ -1,0 +1,67 @@
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+
+
+
+
+<form url="select_1" method="POST">
+
+ {% csrf_token %}
+
+<select name="mes">
+
+
+          <option value='10'>Octubre</option>
+          <option value='2'>Febrero</option>
+          <option value='3'>Marzo</option>
+          <option value='4'>Abril</option>
+          <option value='5'>Mayo</option>
+          <option value='6'>Junio</option>
+          <option value='7'>Julio</option>
+          <option value='8'>Agosto</option>
+          <option value='9'>Setiembre</option>
+          <option value='10'>Octubre</option>
+          <option value='11'>Noviembre</option>
+          <option value='12'>Diciembre</option>
+
+</select>
+   
+</select><br>   
+<input type="submit" value="Buscar" > 
+</form>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+<table class="table table-striped">
+<tr class="warning"><td>fecha</td><td>ip</td><td>dst</td><td>msg</td><td>status</td><td>detail</td></tr>
+
+{% for contact in contacts %}
+
+<tr>
+    <td>{{ contact.fechadb }}</td>
+    <td>{{ contact.fecha }}</td>
+    <td>{{ contact.ip }}</td>
+    <td>{{ contact.msg }}</td>
+    <td>{{ contact.detail}}</td>
+</tr>
+    
+{% endfor %}
+</table>
+
+

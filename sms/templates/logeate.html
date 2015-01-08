@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<link href="http://fonts.googleapis.com/css?family=Open Sans" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var id_ori_llamada = 'xxx';
+
+            $("#button").click(function() {
+                    var username = $("#username").val();
+                    var password = $("#password").val();
+                    $.ajax({
+                        url : "/push", 
+                        type : "POST", 
+                        dataType:"json",
+                        data : {
+                            username: username,
+                            password: password,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                            },
+                            success : function(json) {
+                                $('#result').append(json);
+                                if (json=='Login') {
+							     window.location.href = "/reportes"
+                                
+								}
+                            },
+                    });
+                    return false;
+            });
+        });
+</script>
+
+
+<div id='contenedor'>
+
+<div id='login'>
+LOGIN
+<form method="post" name="example form" class="form-horizontal" role="form">
+        {% csrf_token %}
+        <input name="username" id="username" type="text" placeholder='Username' class="form-control">
+        <input name="password" id="password" type="password" placeholder='Password' class="form-control">
+        <input id="button" type="button" value="Login" class="form-control"></input>
+</form>
+<div id="result">
+</div>
+</div>
+
+</div>
+
+
+
+<style>
+
+*{
+
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+
+}
+
+#contenedor{
+
+background: #777;
+width: 100%;
+text-align: center;
+height: 40em;
+
+}
+
+#login{
+
+background: #aba;
+padding: 40em;
+padding-top: 2em;
+font-family: 'Open Sans'
+
+}
+
+
+
+
+</style>
+
+
+</body>
+</html>

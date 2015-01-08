@@ -1,0 +1,39 @@
+<a class ='csv' href="http://162.243.57.9/{{nfile}}">Descargar Archivo CSV</a><br>
+
+<a>Cantidad de registros : {{ num_reg }}</a>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    <a href='http://162.243.57.9:8000/contact/?page={{contacts.paginator.num_pages}}'>Ultima Pagina</a>
+</div>
+
+<table>
+<tr style="background-color:black; color:white"  ><td  width="15%" >Fecha</td><td width="10%">IP</td><td width="10%">Destino</td><td width="35%">Mensage</td><td width="10%">Status</td><td width="10%">Detail</td><td width="10%">Cliente</td></tr>
+
+{% for contact in contacts %}
+
+<tr>
+    <td width="15%" >{{ contact.fechadb }}</td>
+    <td width="10%" >{{ contact.ip }}</td>
+    <td width="10%">{{ contact.dst }}</td>
+    <td width="35%">{{ contact.msg }}</td>
+    <td width="10%">{{ contact.status }}</td>
+    <td width="10%" >{{ contact.detail}}</td>
+    <td width="10%" >{{ contact.cliente}}</td>
+</tr>
+    
+{% endfor %}
+</table>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Reportes</title>
+	  <meta charset="utf-8">
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+<style>
+
+
+
+#tabla{
+  width: 100%;
+}
+
+
+#salir,#select{
+
+
+  vertical-align: middle;
+  display: inline-block;
+  width: 48%;
+  
+
+
+}
+#titulo{
+
+  text-align: center;
+}
+
+#salir{
+
+  text-align: right;
+}
+#select{
+
+  text-align: left;
+}
+
+</style>
+
+<div id='titulo'>
+
+<a>Reporte de envio de mensajes de Texto</a>
+</div>
+<div id="cabecera">
+
+
+<div id='select'>
+<a>Seleccione un mes</a>
+<select>
+
+
+          <option value='10'>Octubre</option>
+          <option value='2'>Febrero</option>
+          <option value='3'>Marzo</option>
+          <option value='4'>Abril</option>
+          <option value='5'>Mayo</option>
+          <option value='6'>Junio</option>
+          <option value='7'>Julio</option>
+          <option value='8'>Agosto</option>
+          <option value='9'>Setiembre</option>
+          <option value='10'>Octubre</option>
+          <option value='11'>Noviembre</option>
+          <option value='12'>Diciembre</option>
+
+</select>
+
+</div>
+<div id ='salir'>
+<a class ='csv' href="/csv">Generar Archivo CSV</a>
+<a class ='salir' href="/salir">Salir</a>
+</div>
+</div>
+
+<script>
+$( "select" )
+  .change(function () {
+  
+    $( "select option:selected" ).each(function() {
+
+        datax =''
+        titulo=''
+        $('table').remove()
+
+         $.ajax({
+                        url : "/seleccionar", 
+                        type : "POST", 
+                        dataType:"json",
+                        data : {
+                           
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            mes: $(this).val()
+                            },
+                            success : function(json) {
+                            
+                            console.log(count(json))
+                          
+                            if(count(json)>0){
+
+                                  titulo = ' <table class="table table-striped"><tr class="warning"><td>fecha</td><td>ip</td><td>dst</td><td>msg</td><td>status</td><td>detail</td></tr>'
+                                
+                                for (var key in json) {
+                                  console.log(json[key].fields) 
+                                  datax = datax + '<tr><td>'+json[key].fields.fechadb+'</td><td>'+json[key].fields.fecha+'</td><td>'+json[key].fields.ip+'</td><td>'+json[key].fields.msg+'</td><td>'+json[key].fields.status+'</td><td>'+json[key].fields.detail+'</td></tr>'
+                                  }
+
+                                $('#data').append(titulo+datax+'</table>')
+
+
+                            }  
+
+                            
+
+
+                       
+								
+                            },
+                    });
+                    return false;
+    });
+
+  })
+  .change();
+</script>
+
+<script type="text/javascript">
+  
+  function count(obj) {
+   var count=0;
+   for(var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+         ++count;
+      }
+   }
+   return count;
+}
+
+</script>
+
+
+
+
+
+
+    <div id="tabla">
+     <div id="data">
+  
+    </div>
+  
+    </div>
+
+   
+
+
+
+
+
+</body>
+</html>

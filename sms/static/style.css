@@ -1,0 +1,32 @@
+*{
+
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+ 
+
+}
+
+body{
+	 background: #777;
+	
+}
+
+#contenedor{
+
+background: #777;
+width: 100%;
+text-align: center;
+
+}
+
+#login{
+
+background: #aba;
+padding: 50em;
+padding-top: 2em;
+font-family: 'Open Sans';
+
+}
+
+
